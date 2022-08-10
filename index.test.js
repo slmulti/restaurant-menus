@@ -1,4 +1,4 @@
-const {sequelize} = require('./db')
+const {db} = require('./db')
 const {Restaurant, Menu} = require('./models/index')
 const {
     seedRestaurant,
@@ -13,31 +13,58 @@ describe('Restaurant and Menu Models', () => {
         // the 'sync' method will create tables based on the model class
         // by setting 'force:true' the tables are recreated each time the 
         // test suite is run
-        await sequelize.sync({ force: true });
+        await db.sync({ force: true });
     });
 
     test('can create a Restaurant', async () => {
         // TODO - write test
-        expect('NO TEST').toEqual('EXPECTED DATA')
+        //menu.name==null
+        //all the inputs are correct
+
+        // const testResturant = await Restaurant.create({
+        //     name: 'McDonalds',
+        //     location: 'London',
+        //     cuisine: 'American'
+        // })
+
+        // expect(testResturant.name).toEqual('McDonalds')
+
+        const seedTestResturant = await Restaurant.create(seedRestaurant[0])
+        expect(seedTestResturant.name).toEqual(seedRestaurant[0].name)
+        
+
     });
 
     test('can create a Menu', async () => {
-        // TODO - write test
-        expect('NO TEST').toEqual('EXPECTED DATA')
+        // done
+
+        const seedTestMenu = await Menu.create(seedMenu[0])
+        expect(seedTestMenu.title).toEqual(seedMenu[0].title)
+        
     });
 
     test('can find Restaurants', async () => {
-        // TODO - write test
-        expect('NO TEST').toEqual('EXPECTED DATA')
+        // done
+
+        const seedTestFindResturant = await Restaurant.findAll() //this fetches array of objects
+        expect(seedTestFindResturant.length).toEqual(1)
+        expect(seedTestFindResturant[0].name).toEqual(seedRestaurant[0].name)
+
     });
 
     test('can find Menus', async () => {
-        // TODO - write test
-        expect('NO TEST').toEqual('EXPECTED DATA')
+        // done
+        const seedTestFindMenu = await Menu.findAll()
+        expect(seedTestFindMenu[0].title).toEqual(seedMenu[0].title)
+
+        
     });
 
     test('can delete Restaurants', async () => {
         // TODO - write test
-        expect('NO TEST').toEqual('EXPECTED DATA')
+        const seedTestFindResturantToDelete = await Restaurant.findAll()
+        const deletedResturant = await seedTestFindResturantToDelete[0].destroy()
+        expect(deletedResturant.name).toEqual(seedTestFindResturantToDelete[0].name)
+
     });
 })
